@@ -26,6 +26,9 @@ resource "aws_organizations_policy" "deny_non_allowed_regions" {
   description = "Restrict all actions to approved AWS regions only"
   type        = "SERVICE_CONTROL_POLICY"
 
+  # Ensure the policy is created after the organization is created
+  depends_on = [aws_organizations_organization.this]
+
   content = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -51,6 +54,9 @@ resource "aws_organizations_policy" "deny_member_account_sso" {
   description = "Prevent member accounts from creating IAM Identity Center instances"
   type        = "SERVICE_CONTROL_POLICY"
 
+  # Ensure the policy is created after the organization is created
+  depends_on = [aws_organizations_organization.this]
+
   content = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -73,6 +79,9 @@ resource "aws_organizations_policy" "protect_organization_resources" {
   name        = "ProtectOrganizationResources"
   description = "Prevent deletion of critical organization resources"
   type        = "SERVICE_CONTROL_POLICY"
+
+  # Ensure the policy is created after the organization is created
+  depends_on = [aws_organizations_organization.this]
 
   content = jsonencode({
     Version = "2012-10-17"
